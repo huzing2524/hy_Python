@@ -1,0 +1,63 @@
+variables:
+  PUSH_IMAGE_REPOSITORY: "registry.cn-shenzhen.aliyuncs.com/dsdiot/hy"
+
+before_script:
+  - echo $CI_JOB_NAME
+  - echo $CI_PROJECT_DIR
+  # More Predefined variables (Environment variables) see https://docs.gitlab.com/ce/ci/variables/README.html
+
+stages:
+  - build
+  # - cleanup
+  # - test
+  - deploy
+
+build:docker-build:
+  stage: build
+  only:
+    - dev
+  script:
+    - docker image build --force-rm -t ${PUSH_IMAGE_REPOSITORY}:${CI_COMMIT_REF_NAME} .
+    - docker image push ${PUSH_IMAGE_REPOSITORY}:${CI_COMMIT_REF_NAME}
+    - docker image rmi ${PUSH_IMAGE_REPOSITORY}:${CI_COMMIT_REF_NAME}
+  tags:
+    - docker
+    - build
+    - hk
+
+build:docker-build-rel:
+  stage: build
+  only: 
+    - master
+  script:
+    - docker image build --force-rm --no-cache -t ${PUSH_IMAGE_REPOSITORY}:${CI_COMMIT_REF_NAME} .
+    - docker image push ${PUSH_IMAGE_REPOSITORY}:${CI_COMMIT_REF_NAME}
+    - docker image rmi ${PUSH_IMAGE_REPOSITORY}:${CI_COMMIT_REF_NAME}
+  tags:
+    - docker
+    - build
+    - hk
+#
+#deploy:tenv-update-service:
+#  stage: deploy
+#  only:
+#    - dev
+#  script:
+#    - ./deployment/updateComposeService.sh ${CD_TENV_COMPOSE_DIR} ${CI_COMMIT_REF_NAME} ${CD_TENV_SERVICE_NAME}
+#  tags:
+#   - dcompose
+#   - deployment
+#   - tenv
+#   - dsdiotapp
+#
+#deploy:prod-update-service:
+# stage: deploy
+# only:
+#   - master
+# script:
+#   - ./deployment/updateComposeService.sh ${CD_PROD_COMPOSE_DIR} ${CI_COMMIT_REF_NAME} ${CD_PROD_SERVICE_NAME}
+# tags:
+#   - dcompose
+#   - deployment
+#   - prod
+#   - dsdiotapp

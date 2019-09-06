@@ -1,0 +1,8 @@
+.idea/*
+venv/*
+logs/*.log
+__pycache__
+__pycache__/
+# 迁移文件
+hyapp/migrations/*.py
+static/*

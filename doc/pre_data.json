@@ -1,0 +1,28 @@
+[
+  {
+    "model": "hyapp.HyCustomers",
+    "pk": 1566801102,
+    "fields":
+    {
+      "name_cn": "汉宇污水",
+      "delete_state": true,
+      "time": "2019-08-28"
+    }
+  },
+  {
+    "model": "hyapp.HyUsers",
+    "pk": "2cb07044-6009-4f2e-93d3-0166b16e1637",
+    "fields":
+    {
+      "customer_id": 1566801102,
+      "phone": "13537801939",
+      "account": "admin",
+      "name": "jcj",
+      "role": "2",
+      "password": "pbkdf2_sha1$150000$ShAgUEWE9VsK$CEyptjLqftFHyqUQxRzkUIYRFAc=",
+      "creator": "admin",
+      "right": "[0]",
+      "time": "2019-08-28"
+    }
+  }
+]
