@@ -77,10 +77,10 @@ WSGI_APPLICATION = 'hy.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-PG_DATABASE = os.environ.get("PG_DATABASE") or 'hy'
-PG_USER = os.environ.get("PG_USER") or 'hy'
-PG_PASSWORD = os.environ.get("PG_PASSWORD") or 'hy'
-PG_HOST = os.environ.get("PG_HOST") or '10.10.10.32'
+PG_DATABASE = os.environ.get("PG_DATABASE") or 'dsd'
+PG_USER = os.environ.get("PG_USER") or 'postgres'
+PG_PASSWORD = os.environ.get("PG_PASSWORD") or '123456'
+PG_HOST = os.environ.get("PG_HOST") or '127.0.0.1'
 PG_PORT = os.environ.get("PG_PORT") or '5432'
 
 DATABASES = {
@@ -190,7 +190,7 @@ LOGGING = {
             'formatter': 'simple'
         },
         'file': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(os.path.dirname(BASE_DIR), "logs/background.log"),
             'maxBytes': 300 * 1024 * 1024,
@@ -208,7 +208,7 @@ LOGGING = {
 }
 
 # 我的Redis数据库配置
-REDIS_HOST = os.environ.get("REDIS_HOST") or "10.10.10.32"
+REDIS_HOST = os.environ.get("REDIS_HOST") or "127.0.0.1"
 REDIS_PORT = os.environ.get("REDIS_PORT") or "6379"
 REDIS_DATABASE = os.environ.get("REDIS_DATABASE") or "0"
 
