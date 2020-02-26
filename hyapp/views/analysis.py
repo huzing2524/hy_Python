@@ -124,7 +124,10 @@ class DeviceItemDetail(APIView):
         count_sql = "select count(1) from hy_monitor_data where device_id = %s and time > %s and" \
                     " time < %s and name = %s ;"
 
-        device = Device.objects.get(pk=device_id)
+        try:
+            device = Device.objects.get(pk=device_id)
+        except Device.DoesNotExist:
+            return util_response(http_status=status.HTTP_204_NO_CONTENT)
 
         cursor.execute(count_sql, (device_id, start, end, item_id))
         count_res = cursor.fetchone()
