@@ -162,7 +162,8 @@ class DeviceItemDetailExcel(APIView):
         order_state_sql = "select name, value, time from hy_monitor_data where device_id = %s and" \
                           " name = %s  and time > %s and time < %s  order by time desc"
 
-        device = Device.objects.get(pk=device_id)
+        # device = Device.objects.get(pk=device_id)  # 如果数据不存在, 会抛出异常报错
+        device = Device.objects.filter(pk=device_id)
 
         cursor.execute(order_state_sql, (device_id, item_id, start, end))
         res = cursor.fetchall()
@@ -273,20 +274,20 @@ class ChartData(APIView):
         return t[time_type]
 
     def histogram_chart(self, items, time_type, forecast):
+        data_x, data_y = [], []
+        if items:
+            device_id, device_item_id = items[0]['device_id'], items[0]['name']
 
-        device_id, device_item_id = items[0]['device_id'], items[0]['name']
+            sql = ''' SELECT date_trunc(%s, "time") AS time , avg(value :: float) as avg FROM   
+            hy_monitor_data where name = %s and device_id = %s GROUP  BY 1  order by 1 desc offset 0 limit 5;'''
+            db_conn = connections['default']
+            cursor = db_conn.cursor()
+            cursor.execute(sql, (self.time_type(time_type), device_item_id, device_id))
+            res = cursor.fetchall()[::-1]
 
-        sql = ''' SELECT date_trunc(%s, "time") AS time , avg(value :: float) as avg FROM   
-        hy_monitor_data where name = %s and device_id = %s GROUP  BY 1  order by 1 desc offset 0 limit 5;'''
-        db_conn = connections['default']
-        cursor = db_conn.cursor()
-        cursor.execute(sql, (self.time_type(time_type), device_item_id, device_id))
-        res = cursor.fetchall()[::-1]
-        data_x = []
-        data_y = []
-        for x in res:
-            data_x.append(x[0].strftime("%Y-%m-%d %H:%M:%S"))
-            data_y.append(x[1])
+            for x in res:
+                data_x.append(x[0].strftime("%Y-%m-%d %H:%M:%S"))
+                data_y.append(x[1])
         return {'data_x': data_x, 'data_y': data_y}
 
     def pie_chart(self, items, time_type):
