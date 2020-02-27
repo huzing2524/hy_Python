@@ -25,7 +25,7 @@ JWT_SECRET_KEY = 'dsd!abcdefg2019!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -237,7 +237,6 @@ DEFAULT_SYS_SETTINGS = {
     'language': 'cn',
     'fail_times': 5
 }
-ALLOWED_HOSTS = ['*']
 
 LOCATION_API = 'http://api.map.baidu.com/geocoder'
 BAIDU_KEY = 'Q9SFeX3HFspDgjbj0lycKWXMpD4R6Iyb'
